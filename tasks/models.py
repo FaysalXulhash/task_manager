@@ -7,7 +7,7 @@ class Task(models.Model):
 
     title = models.CharField(max_length=200)
     description = models.TextField()
-    due_date = models.DateField(blank=True, null=True)
+    due_date = models.DateTimeField()
     priority = models.IntegerField(choices=((1, 'Low'), (2, 'Medium'), (3, 'High')), default=1)
     is_complete = models.BooleanField(default=False)
     date_created = models.DateTimeField(default=timezone.now)
@@ -15,6 +15,9 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse("task-list")
 
 
 class Photo(models.Model):

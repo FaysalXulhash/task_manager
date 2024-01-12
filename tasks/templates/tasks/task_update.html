@@ -2,13 +2,13 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <h1 class="text-center">
-    {% if form.instance.pk %}Edit{% else %}Create{% endif %} Task
+    Update Task
 </h1>
 
 <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
-    <input class="form-control btn btn-primary" type="submit" value="Submit" />
+    <input class="form-control btn btn-primary" type="submit" value="Update Task" />
 </form>
 
 {% endblock %}

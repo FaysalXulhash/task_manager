@@ -1,0 +1,32 @@
+{% extends 'tasks/base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 class="text-center">
+    Task List
+</h1>
+<div class="container mt-5">
+      <div class="mx-auto col-6">
+      <form>
+        <div class="mb-3">
+        <label class="form-label">Search Task</label>
+              <input name="scarch"  type="text" class="form-control">
+        </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+      </div>
+    </div>
+    {% for task in tasks %}
+        <ul>
+            <h3 >{{ task.title }}</h3>
+            <p>{{ task.description }}</p>
+            <p>Due Date: {{ task.due_date }}</p>
+            <p>Priority: {{ task.get_priority_display }}</p>
+            <p>Completed: {{ task.is_complete }}</p>
+            <a class="btn btn-primary" href="{% url 'update-task' task.id %}">Edit</a>
+            <a class="btn btn-danger" href="{% url 'delete-task' task.pk %}">Delete</a>
+        </ul>
+    {% empty %}
+        <li>No tasks found.</li>
+    {% endfor %}
+
+{% endblock %}

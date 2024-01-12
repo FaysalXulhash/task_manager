@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -25,7 +29,7 @@ SECRET_KEY = 'django-insecure-43s9cpp2$p)qh7s4%(@%uo^*sphs*%i2d9feppps1*ekl0d2lg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -79,12 +83,17 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 DATABASES = {
     'default': {
+        # "ENGINE": os.environ.get("DB_ENGINE"),
+        # "NAME": os.environ.get("DB_NAME"),
+        # "USER": os.environ.get("DB_USER"),
+        # "PASSWORD": os.environ.get("DB_PASSWORD"),
+        # "HOST": os.environ.get("DB_HOST"),
+       # "PORT": "5432",
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "tasksdb",
         "USER": "postgres",
         "PASSWORD": "9086",
         "HOST": "127.0.0.1",
-       # "PORT": "5432",
     }
 }
 
@@ -132,3 +141,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+LOGIN_REDIRECT_URL = 'task-list'
+LOGIN_URL = 'login'
