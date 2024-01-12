@@ -90,9 +90,9 @@ DATABASES = {
         # "HOST": os.environ.get("DB_HOST"),
        # "PORT": "5432",
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "tasksdb",
+        "NAME": "",
         "USER": "postgres",
-        "PASSWORD": "9086",
+        "PASSWORD": "",
         "HOST": "127.0.0.1",
     }
 }
@@ -141,5 +141,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+<<<<<<< HEAD
 LOGIN_REDIRECT_URL = 'task-list'
 LOGIN_URL = 'login'
+=======
+>>>>>>> ff7edb1dc86aa1d7834b64232056ad37eb3c57bf
