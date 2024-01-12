@@ -5,29 +5,28 @@
     Task List
 </h1>
 <div class="container mt-5">
-      <div class="mx-auto col-6">
+      <div class="mx-auto ">
       <form>
         <div class="mb-3"> 
         <label class="form-label">Search Task</label>
               <input name="scarch"  type="text" class="form-control">
         </div>
-      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="submit" class="btn btn-primary mb-3">Search</button>
       </form>
       </div>
     </div>
     {% for task in tasks %}
         <ul>
              <h2><a style="text-decoration:none"class="" href="{% url 'task-detail' task.id %}">{{ task.title }}</a></h2>
-            <p>Task ID: {{ task.id }} </p>
-            <p>Task Author: {{ task.user }} </p>
-            <p>Description: {{ task.description }}</p>
-            <p>Due Date: {{ task.due_date }}</p>
-            <p>Priority: {{ task.get_priority_display }}</p>
-            <p>Completed: {{ task.is_complete }}</p>
+            <p><b>Task ID: </b>{{ task.id }} </p>
+            <p><b>Task Author: </b>{{ task.user }} </p>
+            <p><b>Description: </b>{{ task.description }}</p>
+            <p><b>Due Date: </b>{{ task.due_date }}</p>
+            <p><b>Priority: </b>{{ task.get_priority_display }}</p>
+            <p><b>Completed: </b>{{ task.is_complete }}</p>
             {% for photo in task.photos.all %}
             <img class="img-fluid" src="{{ photo.image.url }}" alt="{{ photo.name }}" />
-
-            <a class="btn btn-warning" href="{% url 'task-photo-delete' task.pk %}"
+            <a class="btn btn-info" href="{% url 'task-photo-delete' task.pk %}"
             >Delete Photo</a>
             {% empty %}
                 <p>No photos for this task yet.</p>

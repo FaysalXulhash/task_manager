@@ -1,10 +1,6 @@
 {% extends "tasks/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<style>
-    .helptext{
-    visibility: hidden;
-}
 </style>
     <div class="content-section">
         <form method="POST">
@@ -19,7 +15,7 @@
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                Already have an account?<a class="mx-auto" href="{% url 'login' %}">Sign In</a>
+                Already have an account?<a class="mx-auto" href="{% url 'login' %}">Log In</a>
             </small>
         </div>
     </div>

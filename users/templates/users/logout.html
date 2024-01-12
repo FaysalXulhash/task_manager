@@ -1,9 +1,9 @@
 
 {% block content %}
-<h1>You have been logged out</h1>
+<h1>You have been logged out. Log In again?</h1>
     <div class="border-top pt-3">
         <small class="text-muted">
-            <a class="ml-2" href="{% url 'login' %}">Log In</a>
+            <a class="ml-2 btn btn-info" href="{% url 'login' %}">Log In</a>
         </small>
     </div>
 {% endblock content%}

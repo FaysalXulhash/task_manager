@@ -19,7 +19,7 @@ from django.urls import path, include
 from tasks.views import home
 from django.contrib.auth import views as auth_views
 from users import views as user_views
-
+from tasks.views import TaskCreateView, TaskListView, TaskUpdateView,TaskDeleteView,TaskDetailView, addPhoto, deletePhoto, TaskViewSet
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('tasks.urls')),
@@ -28,4 +28,5 @@ urlpatterns = [
          (template_name='users/login.html'), name="login"),
     path('logout/', auth_views.LogoutView.as_view
          (template_name='users/logout.html'), name="logout"),
+     
 ]

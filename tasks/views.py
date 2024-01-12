@@ -7,15 +7,40 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.db.models import F
 from django.db.models import Q
+from rest_framework import generics, status, viewsets
+from rest_framework.response import Response
+from .serializers import TaskSerializer
 # Create your views here.
 def home(request):
     return render (request, 'tasks/base.html')
 
+#----
+class TaskListAPIView(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TaskDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 #list view
+        
 class TaskListView(ListView):
     model = Task
     template_name = 'tasks/tasklist.html'
     context_object_name = 'tasks'
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['priorities'] = ['Low', 'Medium', 'High']
@@ -44,12 +69,12 @@ class TaskListView(ListView):
                 priority=priority
             )
 
-        is_complete = self.request.GET.get('is_complete')
-        if is_complete == '1':
-            queryset = queryset.filter(is_complete=True)
-        elif is_complete == '0':
-            queryset = queryset.filter(is_complete=False)
-        
+        # is_complete = self.request.GET.get('is_complete')
+        # if is_complete == '1':
+        #     queryset = queryset.filter(is_complete=True)
+        # elif is_complete == '0':
+        #     queryset = queryset.filter(is_complete=False)
+
         return queryset
 
 
