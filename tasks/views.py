@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Task, Photo
 from .forms import TaskForm, PhotoForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -14,48 +14,43 @@ def home(request):
 #list view
 class TaskListView(ListView):
     model = Task
-    template_name = 'tasks/taskdetail.html'
+    template_name = 'tasks/tasklist.html'
     context_object_name = 'tasks'
-    
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['priorities'] = ['Low', 'Medium', 'High']
-    #     return context
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['priorities'] = ['Low', 'Medium', 'High']
+        return context
     def get_queryset(self):
-        #queryset = Task.objects.all().order_by(F('priority').desc())
+        queryset = Task.objects.all().order_by(F('priority').desc())
         query = self.request.GET.get('search')
         if query:
-            object_list = self.model.objects.filter(title__icontains=query)
-        else:
-            object_list = self.model.objects.all()
-        return object_list
+            queryset = queryset.filter(Q(title__icontains=query))
+        
+        date_created = self.request.GET.get('date_created')
+        if date_created:
+            queryset = queryset.filter(
+                date_created__date=date_created
+            )
 
-        # date_created = self.request.GET.get('date_created')
-        # if date_created:
-        #     queryset = queryset.filter(
-        #         date_created__date=date_created
-        #     )
+        due_date = self.request.GET.get('due_date')
+        if due_date:
+            queryset = queryset.filter(
+                due_date__date=due_date
+            )
 
-        # due_date = self.request.GET.get('due_date')
-        # if due_date:
-        #     queryset = queryset.filter(
-        #         due_date__date=due_date
-        #     )
+        priority = self.request.GET.get('priority')
+        if priority:
+            queryset = queryset.filter(
+                priority=priority
+            )
 
-        # priority = self.request.GET.get('priority')
-        # if priority:
-        #     queryset = queryset.filter(
-        #         priority=priority
-        #     )
-
-        # is_complete = self.request.GET.get('is_complete')
-        # if is_complete == '1':
-        #     queryset = queryset.filter(is_complete=True)
-        # elif is_complete == '0':
-        #     queryset = queryset.filter(is_complete=False)
-
-        # return queryset
+        is_complete = self.request.GET.get('is_complete')
+        if is_complete == '1':
+            queryset = queryset.filter(is_complete=True)
+        elif is_complete == '0':
+            queryset = queryset.filter(is_complete=False)
+        
+        return queryset
 
 
 #detail view
@@ -97,3 +92,26 @@ class TaskUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == task.user:
             return True
         return False
+
+#add photo in task
+def addPhoto(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.task = task
+            photo.save()
+            messages.success(request, 'Photo added successfully.')
+            return redirect('task-detail', pk=task.pk)
+    else:
+        form = PhotoForm()
+    return render(request, 'tasks/addphoto.html', {'form': form})
+
+#delete photo
+def deletePhoto(request, pk):
+    photo = get_object_or_404(Photo, pk=pk)
+    task_pk = photo.task.pk
+    photo.delete()
+    messages.success(request, 'Photo deleted successfully.')
+    return redirect('task-detail', pk=task_pk)

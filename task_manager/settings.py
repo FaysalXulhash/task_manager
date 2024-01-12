@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
-
+import environ
+import os
+from dotenv import load_dotenv
+load_dotenv()
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-from dotenv import load_dotenv
-import os
-load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-43s9cpp2$p)qh7s4%(@%uo^*sphs*%i2d9feppps1*ekl0d2lg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -89,10 +89,10 @@ DATABASES = {
         # "PASSWORD": os.environ.get("DB_PASSWORD"),
         # "HOST": os.environ.get("DB_HOST"),
        # "PORT": "5432",
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "",
-        "USER": "postgres",
-        "PASSWORD": "",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get('DATABASE_NAME'),
+        "USER": os.environ.get('DATABASE_USER'),
+        "PASSWORD": os.environ.get('DATABASE_PASS'),
         "HOST": "127.0.0.1",
     }
 }
@@ -141,8 +141,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-<<<<<<< HEAD
+
 LOGIN_REDIRECT_URL = 'task-list'
 LOGIN_URL = 'login'
-=======
->>>>>>> ff7edb1dc86aa1d7834b64232056ad37eb3c57bf
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
